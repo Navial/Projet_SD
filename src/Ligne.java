@@ -6,19 +6,17 @@ public class Ligne {
     private int numeroDeLigne;
     private String premiereStation;
     private String terminus;
-    private Type vehicule;
+    private String typeVehicule;
     private int tempsAttenteMoyen;
 
-    public enum Type{
-        METRO, TRAM, BUS 
-    }
 
-    public Ligne(int id, int numeroDeLigne, String premiereStation, String terminus, Type vehicule, int tempsAttenteMoyen) {
+
+    public Ligne(int id, int numeroDeLigne, String premiereStation, String terminus, String typeVehicule, int tempsAttenteMoyen) {
         this.id = id;
         this.numeroDeLigne = numeroDeLigne;
         this.premiereStation = premiereStation;
         this.terminus = terminus;
-        this.vehicule = vehicule;
+        this.typeVehicule = typeVehicule;
         this.tempsAttenteMoyen = tempsAttenteMoyen;
     }
 
@@ -38,8 +36,8 @@ public class Ligne {
         return this.terminus;
     }
 
-    public Type getVehicule() {
-        return this.vehicule;
+    public String getVehicule() {
+        return this.typeVehicule;
     }
 
     public int getTempsAttenteMoyen() {
