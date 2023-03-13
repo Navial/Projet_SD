@@ -3,7 +3,7 @@ package src;
 public class Ligne {
 
     private int id;
-    private int numeroDeLigne;
+    private String numeroDeLigne;
     private String premiereStation;
     private String terminus;
     private String typeVehicule;
@@ -11,7 +11,7 @@ public class Ligne {
 
 
 
-    public Ligne(int id, int numeroDeLigne, String premiereStation, String terminus, String typeVehicule, int tempsAttenteMoyen) {
+    public Ligne(int id , String numeroDeLigne, String premiereStation, String terminus, String typeVehicule, int tempsAttenteMoyen) {
         this.id = id;
         this.numeroDeLigne = numeroDeLigne;
         this.premiereStation = premiereStation;
@@ -24,7 +24,7 @@ public class Ligne {
         return this.id;
     }
 
-    public int getNumeroDeLigne() {
+    public String getNumeroDeLigne() {
         return this.numeroDeLigne;
     }
 
@@ -46,14 +46,14 @@ public class Ligne {
 
     @Override
     public String toString() {
-        return "{" +
+        return " ligne = [ " +
             " id='" + getId() + "'" +
             ", numeroDeLigne='" + getNumeroDeLigne() + "'" +
             ", premiereStation='" + getPremiereStation() + "'" +
             ", terminus='" + getTerminus() + "'" +
             ", vehicule='" + getVehicule() + "'" +
             ", tempsAttenteMoyen='" + getTempsAttenteMoyen() + "'" +
-            "}";
+            "] ";
     }
 
 }
