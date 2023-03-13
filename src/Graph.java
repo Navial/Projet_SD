@@ -31,7 +31,6 @@ public class Graph {
             String value = scLigne.nextLine();
             String[] values = value.split(",");
             Ligne ligne = new Ligne(Integer.parseInt(values[0]),(values[1]),values[2],values[3],values[4],Integer.parseInt(values[5]));
-            System.out.println(ligne);
             mapLigne.put(Integer.parseInt(values[0]),ligne);
         }
 
@@ -40,7 +39,6 @@ public class Graph {
             String[] values = value.split(",");
             Ligne ligne = mapLigne.get(Integer.parseInt(values[0]));
             Troncon troncon = new Troncon(Integer.parseInt(values[0]),values[1],values[2],Integer.parseInt(values[3]),ligne);
-            System.out.println(troncon);
             if (!mapTronconsDepart.containsKey(troncon.getDepart())){
                 mapTronconsDepart.put(troncon.getDepart(), new HashSet<>());
                 mapTronconsDepart.get(troncon.getDepart()).add(troncon);
