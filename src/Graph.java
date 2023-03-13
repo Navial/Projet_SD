@@ -25,7 +25,6 @@ public class Graph {
         Scanner scLigne = new Scanner(fileLignes);
         Scanner scTrancons = new Scanner(fileTrancons);
 
-
         while (scLigne.hasNextLine()){
             System.out.println();
             String value = scLigne.nextLine();
@@ -46,16 +45,17 @@ public class Graph {
                 mapTronconsDepart.get(troncon.getDepart()).add(troncon);
             }
         }
-
-
     }
 
     public void calculerCheminMinimisantNombreTroncons(String depart, String arrivee) {
         // Map de tous les chemins les plus court entre le départ et toutes les autres stations 
-        
         Map<String, Troncon> mapBFS = new HashMap<>();
+        // Retiens toutes les stations a parcourir dans l'ordre 
         Deque<String> fileDesStationsAParcourir = new ArrayDeque<>();
+        // Retiens toutes les stations parcoures pour ne pas tourner en boucle
         Set<String> stationsParcourues = new HashSet<>();
+        // Contient l'itinéraire dans le bon ordre
+        Deque<Troncon> itineraire = new ArrayDeque<>();
 
         mapBFS.put(depart, null);
         fileDesStationsAParcourir.add(depart);
@@ -63,19 +63,25 @@ public class Graph {
         while(!fileDesStationsAParcourir.isEmpty()){
             for (Troncon troncon : mapTronconsDepart.get(fileDesStationsAParcourir.poll())) {
                 if(!stationsParcourues.contains(troncon.getDepart())){
-                    
                     mapBFS.put(troncon.getArrivee(), troncon);
                     stationsParcourues.add(troncon.getDepart());
                     if(troncon.getArrivee().equals(arrivee)){
-                        
                         fileDesStationsAParcourir.clear();
+                        Troncon tronconItineraire = troncon;
+                        while(!tronconItineraire.getDepart().equals(depart)){
+                            itineraire.addFirst(tronconItineraire);
+                            tronconItineraire = mapBFS.get(tronconItineraire.getDepart());
+                        }
+                        
+                        break;
                     }
                     fileDesStationsAParcourir.add(troncon.getArrivee());    
                 }
             }   
         } 
-
-
+        for(Troncon troncon : itineraire){
+            System.out.println(troncon);
+        }
     }
 
     public void calculerCheminMinimisantTempsTransport(String string, String string2) {
