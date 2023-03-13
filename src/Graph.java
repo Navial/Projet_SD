@@ -10,6 +10,9 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+import javax.annotation.processing.SupportedOptions;
+import javax.sound.midi.Soundbank;
+
 public class Graph {
 
     private Map<String, Set<Troncon>> mapTronconsDepart;
@@ -26,7 +29,6 @@ public class Graph {
         Scanner scTrancons = new Scanner(fileTrancons);
 
         while (scLigne.hasNextLine()){
-            System.out.println();
             String value = scLigne.nextLine();
             String[] values = value.split(",");
             Ligne ligne = new Ligne(Integer.parseInt(values[0]),(values[1]),values[2],values[3],values[4],Integer.parseInt(values[5]));
@@ -61,8 +63,10 @@ public class Graph {
         fileDesStationsAParcourir.add(depart);
 
         while(!fileDesStationsAParcourir.isEmpty()){
-            for (Troncon troncon : mapTronconsDepart.get(fileDesStationsAParcourir.poll())) {
-                if(!stationsParcourues.contains(troncon.getDepart())){
+            String stationCourante = fileDesStationsAParcourir.poll();
+            for (Troncon troncon : mapTronconsDepart.get(stationCourante))  {
+                if(!stationsParcourues.contains(troncon.getArrivee())){
+
                     mapBFS.put(troncon.getArrivee(), troncon);
                     stationsParcourues.add(troncon.getDepart());
                     if(troncon.getArrivee().equals(arrivee)){
@@ -72,10 +76,10 @@ public class Graph {
                             itineraire.addFirst(tronconItineraire);
                             tronconItineraire = mapBFS.get(tronconItineraire.getDepart());
                         }
-                        
                         break;
                     }
-                    fileDesStationsAParcourir.add(troncon.getArrivee());    
+                    if(!fileDesStationsAParcourir.contains(troncon.getArrivee()))
+                        fileDesStationsAParcourir.add(troncon.getArrivee());    
                 }
             }   
         } 
