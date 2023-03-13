@@ -32,6 +32,10 @@ public class Troncon {
         return this.duree;
     }
 
+    public Ligne getLigne() {
+        return ligne;
+    }
+
     @Override
     public String toString() {
         return "Troncon [ " +

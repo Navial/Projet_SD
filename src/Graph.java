@@ -17,6 +17,9 @@ public class Graph {
 
     private Map<String, Set<Troncon>> mapTronconsDepart;
     private Map<Integer, Ligne> mapLigne;
+    private int nbreTrancons;
+    private int dureeTransport;
+    private int dureeTotal;
 
     // ajouter une file et un autre set qui servira de stocker toutes les stations
     //deja pacrourues pour BFS
@@ -24,6 +27,7 @@ public class Graph {
         this.mapTronconsDepart = new HashMap<>();
 
         this.mapLigne = new HashMap<>();
+
 
         Scanner scLigne = new Scanner(fileLignes);
         Scanner scTrancons = new Scanner(fileTrancons);
@@ -76,16 +80,30 @@ public class Graph {
                             itineraire.addFirst(tronconItineraire);
                             tronconItineraire = mapBFS.get(tronconItineraire.getDepart());
                         }
+                        // TODO j ai ajoute le premier trancons car tu sortais de la boucle
+                        itineraire.addFirst(tronconItineraire);
                         break;
                     }
                     if(!fileDesStationsAParcourir.contains(troncon.getArrivee()))
                         fileDesStationsAParcourir.add(troncon.getArrivee());    
                 }
             }   
-        } 
+        }
+
+        this.nbreTrancons = 0;
+        this.dureeTransport = 0;
+        this.dureeTotal = 0;
+
         for(Troncon troncon : itineraire){
+            nbreTrancons ++;
+            dureeTransport += troncon.getDuree();
+            dureeTotal += (troncon.getLigne().getTempsAttenteMoyen());
             System.out.println(troncon);
         }
+        dureeTotal += dureeTransport;
+        System.out.println("");
+        System.out.println("nbTroncons=" + nbreTrancons);
+        System.out.println("dureeTransport=" +dureeTransport+ " dureeTotale="+ dureeTotal);
     }
 
     public void calculerCheminMinimisantTempsTransport(String string, String string2) {

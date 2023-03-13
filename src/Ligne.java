@@ -44,6 +44,8 @@ public class Ligne {
         return this.tempsAttenteMoyen;
     }
 
+
+
     @Override
     public String toString() {
         return " Ligne = [ " +
