@@ -5,13 +5,15 @@ public class Troncon {
     private String depart;
     private String arrivee;
     private int duree;
+    private Ligne ligne;
 
 
-    public Troncon(int indentifiant, String depart, String arrivee, int duree) {
+    public Troncon(int indentifiant, String depart, String arrivee, int duree, Ligne ligne) {
         this.indentifiant = indentifiant;
         this.depart = depart;
         this.arrivee = arrivee;
         this.duree = duree;
+        this.ligne= ligne;
     }    
 
     public int getIndentifiant() {
@@ -32,11 +34,11 @@ public class Troncon {
 
     @Override
     public String toString() {
-        return "{" +
+        return "Troncon [ " +
             " indentifiant='" + getIndentifiant() + "'" +
             ", depart='" + getDepart() + "'" +
             ", arrivee='" + getArrivee() + "'" +
             ", duree='" + getDuree() + "'" +
-            "}";
+            "] " + ligne.toString();
     }
 }
