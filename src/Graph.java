@@ -53,6 +53,8 @@ public class Graph {
     }
 
     public void calculerCheminMinimisantNombreTroncons(String depart, String arrivee) {
+        // Map de tous les chemins les plus court entre le départ et toutes les autres stations 
+        
         Map<String, Troncon> mapBFS = new HashMap<>();
         Deque<String> fileDesStationsAParcourir = new ArrayDeque<>();
         Set<String> stationsParcourues = new HashSet<>();
@@ -62,14 +64,17 @@ public class Graph {
 
         while(!fileDesStationsAParcourir.isEmpty()){
             for (Troncon troncon : mapTronconsDepart.get(fileDesStationsAParcourir.poll())) {
-                mapBFS.put(troncon.getArrivee(), troncon);
-                stationsParcourues.add(troncon.getDepart());
-                if(troncon.getArrivee().equals(arrivee)){
+                if(!stationsParcourues.contains(troncon.getDepart())){
                     
+                    mapBFS.put(troncon.getArrivee(), troncon);
+                    stationsParcourues.add(troncon.getDepart());
+                    if(troncon.getArrivee().equals(arrivee)){
+                        
+                        fileDesStationsAParcourir.clear();
+                    }
+                    fileDesStationsAParcourir.add(troncon.getArrivee());    
                 }
-                fileDesStationsAParcourir.add(troncon.getArrivee());
             }   
-
         } 
 
 
