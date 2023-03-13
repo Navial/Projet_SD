@@ -46,7 +46,7 @@ public class Ligne {
 
     @Override
     public String toString() {
-        return " ligne = [ " +
+        return " Ligne = [ " +
             " id='" + getId() + "'" +
             ", numeroDeLigne='" + getNumeroDeLigne() + "'" +
             ", premiereStation='" + getPremiereStation() + "'" +

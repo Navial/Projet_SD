@@ -38,7 +38,7 @@ public class Troncon {
             " indentifiant='" + getIndentifiant() + "'" +
             ", depart='" + getDepart() + "'" +
             ", arrivee='" + getArrivee() + "'" +
-            ", duree='" + getDuree() + "'" +
-            "] " + ligne.toString();
+            ", duree='" + getDuree() + " , ligne = "  + ligne.toString()+
+            " ] ";
     }
 }
