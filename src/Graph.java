@@ -9,18 +9,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
-
-import javax.annotation.processing.SupportedOptions;
-import javax.sound.midi.Soundbank;
+import java.util.Map.Entry;
 
 public class Graph {
 
     private Map<String, Set<Troncon>> mapTronconsDepart;
     private Map<Integer, Ligne> mapLigne;
-    private int nbreTrancons;
-    private int dureeTransport;
-    private int dureeTotal;
-
     // ajouter une file et un autre set qui servira de stocker toutes les stations
     //deja pacrourues pour BFS
     public Graph(File fileLignes, File fileTrancons) throws FileNotFoundException {
@@ -63,6 +57,10 @@ public class Graph {
         // Contient l'itinéraire dans le bon ordre
         Deque<Troncon> itineraire = new ArrayDeque<>();
 
+        int nbreTrancons;
+        int dureeTransport;
+        int dureeTotal;
+
         mapBFS.put(depart, null);
         fileDesStationsAParcourir.add(depart);
 
@@ -90,9 +88,9 @@ public class Graph {
             }   
         }
 
-        this.nbreTrancons = 0;
-        this.dureeTransport = 0;
-        this.dureeTotal = 0;
+        nbreTrancons = 0;
+        dureeTransport = 0;
+        dureeTotal = 0;
 
         for(Troncon troncon : itineraire){
             nbreTrancons ++;
@@ -106,6 +104,49 @@ public class Graph {
         System.out.println("dureeTransport=" +dureeTransport+ " dureeTotale="+ dureeTotal);
     }
 
-    public void calculerCheminMinimisantTempsTransport(String string, String string2) {
+    public void calculerCheminMinimisantTempsTransport(String depart, String arrivee) {
+        // etiquettes provisoires => Map<sommet, valeur actuelle>
+        Map<String, Integer> etiquetteProvisoire = new HashMap<>();
+
+        // etiquettes définitives => Map<sommet, valeur definitive>
+        Map<String, Integer> etiquetteDefinitive = new HashMap<>();
+
+        // Map pour retenir l'arc avec son départ et l'arrivée (comme BFS)
+        Map<String, Troncon> mapTrajetLePlusCourt = new HashMap<>();
+
+        // Deque pour inverser le chemin de la map
+        Deque<Troncon> itineraire = new ArrayDeque<>();
+        
+        // Etiquettes provisoire : remplis un tableau avec, comme valeur, le temps de trajet pour aller d'un 
+        // point de départ à tous les autres qui sont accèssible en 1 troncon + le temps necessaire pour
+        // aller a ce nouveau point de départ
+        etiquetteProvisoire.put(depart, -1);
+        String stationCourante = null;
+        int valeurTrajetActuel = Integer.MIN_VALUE-1;
+        for(Entry<String, Integer> entry : etiquetteProvisoire.entrySet()){
+            if(entry.getValue()<valeurTrajetActuel){
+                stationCourante = entry.getKey();
+                valeurTrajetActuel = entry.getValue();
+            }
+        }
+        
+        etiquetteDefinitive.put(stationCourante, valeurTrajetActuel);
+
+        if(stationCourante == null)
+            return;
+        for(Troncon troncon : mapTronconsDepart.get(stationCourante)){
+            System.out.println("test");
+            etiquetteProvisoire.put(troncon.getArrivee(), troncon.getDuree());
+        }
+        
+        System.out.println(mapTronconsDepart.get(stationCourante));
+        System.out.println(etiquetteProvisoire);
+        System.out.println(stationCourante);
+        System.out.println(valeurTrajetActuel);
+        // for (Troncon troncon : mapTronconsDepart.get(stationCourante))  {
+
+        // Etiquettes definitives : A chaque fin de tours, va mettre dans un tableau toutes les valeurs où le 
+        // temps est le plus petit
+
     }
 }
