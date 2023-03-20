@@ -91,11 +91,19 @@ public class Graph {
         nbreTrancons = 0;
         dureeTransport = 0;
         dureeTotal = 0;
-
+        int i = 0;
+        Troncon tronconPrecedent;
         for(Troncon troncon : itineraire){
             nbreTrancons ++;
             dureeTransport += troncon.getDuree();
-            dureeTotal += (troncon.getLigne().getTempsAttenteMoyen());
+            if (i == 0){
+                dureeTotal += (troncon.getLigne().getTempsAttenteMoyen());
+                i++;
+            }
+            tronconPrecedent = troncon;
+            if (troncon.getLigne().getId() != tronconPrecedent.getLigne().getId()){
+                dureeTotal += (troncon.getLigne().getTempsAttenteMoyen());
+            }
             System.out.println(troncon);
         }
         dureeTotal += dureeTransport;
