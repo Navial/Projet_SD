@@ -78,7 +78,6 @@ public class Graph {
                             itineraire.addFirst(tronconItineraire);
                             tronconItineraire = mapBFS.get(tronconItineraire.getDepart());
                         }
-                        // TODO j ai ajoute le premier trancons car tu sortais de la boucle
                         itineraire.addFirst(tronconItineraire);
                         break;
                     }
@@ -120,29 +119,63 @@ public class Graph {
         // Etiquettes provisoire : remplis un tableau avec, comme valeur, le temps de trajet pour aller d'un 
         // point de départ à tous les autres qui sont accèssible en 1 troncon + le temps necessaire pour
         // aller a ce nouveau point de départ
-        etiquetteProvisoire.put(depart, -1);
-        String stationCourante = null;
-        int valeurTrajetActuel = Integer.MIN_VALUE-1;
-        for(Entry<String, Integer> entry : etiquetteProvisoire.entrySet()){
-            if(entry.getValue()<valeurTrajetActuel){
-                stationCourante = entry.getKey();
-                valeurTrajetActuel = entry.getValue();
+        etiquetteProvisoire.put(depart, 0);
+        etiquetteDefinitive.put(depart, 0);
+        String stationCourante = depart;
+
+        for(int i=0 ; i< 5; i++){
+                
+            for(Troncon troncon : mapTronconsDepart.get(stationCourante)){
+                etiquetteProvisoire.put(troncon.getArrivee(), troncon.getDuree());
             }
-        }
-        
+            System.out.println("etiquetteProvisoire : " + etiquetteProvisoire);
+
+            int valeurTrajetActuel = Integer.MIN_VALUE-1;
+            for(Entry<String, Integer> entry : etiquetteProvisoire.entrySet()){
+                System.out.println("--- entry : " + entry + " valeurTrajetActuel : " + valeurTrajetActuel);
+                if(entry.getValue()<valeurTrajetActuel && !etiquetteDefinitive.containsKey(entry.getKey())){
+                    System.out.println("--- Nv minimum : " + entry);
+                    stationCourante = entry.getKey();
+                    valeurTrajetActuel = entry.getValue();
+                }
+            }
+            
+            etiquetteDefinitive.put(stationCourante, valeurTrajetActuel);
+
+            if(stationCourante == null)
+                return;
+            
+            // System.out.println("mapTronconsDepart.get(stationCourante) : "  + mapTronconsDepart.get(stationCourante));
+            // System.out.println("etiquetteProvisoire : " + etiquetteProvisoire);
+            System.out.println("*** new etiquetteDefinitive : " + etiquetteDefinitive);
+            System.out.println("stationCourante :  " + stationCourante);
+            System.out.println("valeurTrajetActuel"  + valeurTrajetActuel);
+            }
+            for(Troncon troncon : mapTronconsDepart.get(stationCourante)){
+                etiquetteProvisoire.put(troncon.getArrivee(), troncon.getDuree());
+            }
+            System.out.println("etiquetteProvisoire : " + etiquetteProvisoire);
+
+            int valeurTrajetActuel = Integer.MIN_VALUE-1;
+            for(Entry<String, Integer> entry : etiquetteProvisoire.entrySet()){
+                System.out.println("--- entry : " + entry + " valeurTrajetActuel : " + valeurTrajetActuel);
+                if(entry.getValue()<valeurTrajetActuel && !etiquetteDefinitive.containsKey(entry.getKey())){
+                    System.out.println("--- Nv minimum : " + entry);
+                    stationCourante = entry.getKey();
+                    valeurTrajetActuel = entry.getValue();
+                }
+            }
+            
         etiquetteDefinitive.put(stationCourante, valeurTrajetActuel);
 
         if(stationCourante == null)
             return;
-        for(Troncon troncon : mapTronconsDepart.get(stationCourante)){
-            System.out.println("test");
-            etiquetteProvisoire.put(troncon.getArrivee(), troncon.getDuree());
-        }
         
-        System.out.println(mapTronconsDepart.get(stationCourante));
-        System.out.println(etiquetteProvisoire);
-        System.out.println(stationCourante);
-        System.out.println(valeurTrajetActuel);
+        // System.out.println("mapTronconsDepart.get(stationCourante) : "  + mapTronconsDepart.get(stationCourante));
+        // System.out.println("etiquetteProvisoire : " + etiquetteProvisoire);
+        System.out.println("*** new etiquetteDefinitive : " + etiquetteDefinitive);
+        System.out.println("stationCourante :  " + stationCourante);
+        System.out.println("valeurTrajetActuel"  + valeurTrajetActuel);
         // for (Troncon troncon : mapTronconsDepart.get(stationCourante))  {
 
         // Etiquettes definitives : A chaque fin de tours, va mettre dans un tableau toutes les valeurs où le 
