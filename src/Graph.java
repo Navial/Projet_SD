@@ -141,7 +141,7 @@ public class Graph {
             for(Troncon troncon : mapTronconsDepart.get(stationCourante)){
                 if(!etiquetteDefinitive.containsKey(troncon.getArrivee())){
                 
-                    if( etiquetteProvisoire.containsKey(troncon.getArrivee())){
+                    if(etiquetteProvisoire.containsKey(troncon.getArrivee())){
                         if(etiquetteProvisoire.get(troncon.getDepart()) + troncon.getDuree() < etiquetteProvisoire.get(troncon.getDepart())){
                             etiquetteProvisoire.put(troncon.getArrivee(), etiquetteProvisoire.get(provenance) + troncon.getDuree());
                         }
@@ -162,7 +162,7 @@ public class Graph {
                 }
             }
             
-            etiquetteDefinitive.put(stationCourante,  etiquetteDefinitive.get(provenance) + valeurTrajetActuel);
+            etiquetteDefinitive.put(stationCourante,  valeurTrajetActuel);
             // System.out.println("etiquetteDefinitive : " + etiquetteDefinitive);
         if(stationCourante == null)
             return;
