@@ -80,7 +80,9 @@ public class Graph {
                             tronconItineraire = mapBFS.get(tronconItineraire.getDepart());
                         }
                         itineraire.addFirst(tronconItineraire);
-                        break;
+
+                        
+                        return;
                     }
                     if(!fileDesStationsAParcourir.contains(troncon.getArrivee()))
                         fileDesStationsAParcourir.add(troncon.getArrivee());    
@@ -121,30 +123,17 @@ public class Graph {
 
         // Map pour retenir l'arc avec son départ et l'arrivée (comme BFS)
         Map<String, Troncon> mapTrajetLePlusCourt = new HashMap<>();
-
-        // Deque pour inverser le chemin de la map
-        Deque<Troncon> itineraire = new ArrayDeque<>();
         
-        // Etiquettes provisoire : remplis un tableau avec, comme valeur, le temps de trajet pour aller d'un 
-        // point de départ à tous les autres qui sont accèssible en 1 troncon + le temps necessaire pour
-        // aller a ce nouveau point de départ
         etiquetteProvisoire.put(depart, 0);
         String stationCourante = depart;
+
         while(!stationCourante.equals(arrivee)){
-        // for(int i=0; i<5; i++){
-            // System.out.println("**************************************");            
-            // System.out.println("etiquetteProvisoire : " + etiquetteProvisoire);            
-            // System.out.println("etiquetteDefinitive : " + etiquetteDefinitive);
-            // System.out.println("stationCourante : " + stationCourante);
 
             // Recherche du plus petit trajet parmis les etiquettes provisoire
             Entry<String, Integer> plusPetitTrajet = new SimpleEntry<String, Integer>(null, Integer.MAX_VALUE);
             
-            // System.out.println("--- Recherche du plus petit trajet :");
             for(Entry<String, Integer> entry : etiquetteProvisoire.entrySet()){
-                // System.out.println("entry : " + entry);
                 if(entry.getValue()<plusPetitTrajet.getValue() ){
-                    // System.out.println("!!! Nv minimum : " + entry);
                     plusPetitTrajet = entry;
                 }
             }
@@ -157,40 +146,52 @@ public class Graph {
             stationCourante = key;
             // Construction de l'itineraire en retrournant la map
             if(stationCourante.equals(arrivee)){
+                // Deque pour inverser le chemin de la map
+                Deque<Troncon> itineraire = new ArrayDeque<>();
+
                 Troncon tronconItineraire = mapTrajetLePlusCourt.get(stationCourante);
+
                 while(!tronconItineraire.getDepart().equals(depart)){
                     itineraire.addFirst(tronconItineraire);
                     tronconItineraire = mapTrajetLePlusCourt.get(tronconItineraire.getDepart());
                 }
-                // tronconItineraire = mapTrajetLePlusCourt.get(depart);
                 itineraire.addFirst(tronconItineraire);
-                System.out.println("------------ ITINERAIRE ------------");
+
+                int nbrTroncons = 0;
+                int dureeTotale = 0;
+                int dureeTransport = 0;
+                String lignePrecedente = null;
+
                 for(Troncon troncon : itineraire){
+                    if(!troncon.getLigne().getNumeroDeLigne().equals(lignePrecedente)){
+                        dureeTotale += troncon.getLigne().getTempsAttenteMoyen();
+                    }
+                
+                    nbrTroncons ++;
+                    dureeTransport += troncon.getDuree();
+
                     System.out.println(troncon);
+                    lignePrecedente = troncon.getLigne().getNumeroDeLigne();
                 }
+                dureeTotale += dureeTransport;
+                System.out.println("nbTroncons : " + nbrTroncons);
+                System.out.println("dureeTransport : " + dureeTransport + " dureeTotal : " + dureeTotale);
+                return;
             }
             // Mise à jour des etiquettes provisoires
-            // TODO : Prendre en compte la durée pour arriver a ce sommet (via une TreeMap)
-            // System.out.println("--- Mise à jour des etiquettes provisoires : ");
             for(Troncon troncon : mapTronconsDepart.get(stationCourante)){
                 if(!etiquetteDefinitive.containsKey(troncon.getArrivee())){
                     if(etiquetteProvisoire.containsKey(troncon.getArrivee())){
                         if(etiquetteDefinitive.get(stationCourante) + troncon.getDuree() < etiquetteProvisoire.get(troncon.getArrivee())){
-                            // System.out.println("etiquetteProvisoire : " + etiquetteProvisoire);            
                             etiquetteProvisoire.put(troncon.getArrivee(), etiquetteDefinitive.get(stationCourante) + troncon.getDuree());
                             mapTrajetLePlusCourt.put(troncon.getArrivee(), troncon);
                         }
                     }else{
-                        // System.out.println("etiquetteProvisoire : " + etiquetteProvisoire);            
                         etiquetteProvisoire.put(troncon.getArrivee(), etiquetteDefinitive.get(stationCourante) + troncon.getDuree());
                         mapTrajetLePlusCourt.put(troncon.getArrivee(), troncon);
                     }
                 }
             }
-
-            // System.out.println("etiquetteProvisoire : " + etiquetteProvisoire);            
-            // System.out.println("etiquetteDefinitive : " + etiquetteDefinitive);
-            // System.out.println("stationCourante : " + stationCourante);
         }
     }
 }
