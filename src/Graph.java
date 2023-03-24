@@ -110,29 +110,6 @@ public class Graph {
                 }
             }   
         }
-
-        // nbreTrancons = 0;
-        // dureeTransport = 0;
-        // dureeTotal = 0;
-        // int i = 0;
-        // Troncon tronconPrecedent;
-        // for(Troncon t : itineraire){
-        //     nbreTrancons ++;
-        //     dureeTransport += t.getDuree();
-        //     if (i == 0){
-        //         dureeTotal += (t.getLigne().getTempsAttenteMoyen());
-        //         i++;
-        //     }
-        //     tronconPrecedent = t;
-        //     if (t.getLigne().getId() != tronconPrecedent.getLigne().getId()){
-        //         dureeTotal += (t.getLigne().getTempsAttenteMoyen());
-        //     }
-        //     System.out.println(t);
-        // }
-        // dureeTotal += dureeTransport;
-        // System.out.println("");
-        // System.out.println("nbTroncons=" + nbreTrancons);
-        // System.out.println("dureeTransport=" +dureeTransport+ " dureeTotale="+ dureeTotal);
     }
 
     public void calculerCheminMinimisantTempsTransport(String depart, String arrivee) {
